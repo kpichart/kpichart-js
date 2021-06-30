@@ -1,3 +1,8 @@
 dist
 node_modules
 _ignore
+.DS_Store
+.idea
+*.iml
+*.log
+.vscode
