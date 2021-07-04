@@ -46,7 +46,7 @@ export const App = (function () {
       // Track the first/current page view
       this.trackSinglePage(true, metricsData.path)
 
-      window.addEventListener("unload", onPageTimeSpent)
+      window.addEventListener('unload', onPageTimeSpent)
     }
   }
 
@@ -95,7 +95,7 @@ export const App = (function () {
       return path;
     }
     if (isReferrerSameHost()) {
-      return document.referrer.replace(getHost(), "")
+      return document.referrer.replace(getHost(), '')
     }
     return document.referrer;
   }
@@ -144,12 +144,12 @@ export const App = (function () {
       if (!isOnFirstPage) {
         const now = Date.now();
         this.metricsData.time = now;
-        params.duration = props.durationInterval(now - time, previous + " - ");
+        params.duration = props.durationInterval(now - time, previous + ' - ');
       }
     }
     this.metricsData.path = path;
 
-    this.track('Page Views', {
+    this.track(constants.EVENT.PAGE_VIEWS, {
       props: params
     })
   }
@@ -159,7 +159,7 @@ export const App = (function () {
 
   App.prototype.onPageTimeSpent = function () {
     const time = this.metricsData && this.metricsData.time;
-    if (!time || typeof navigator.sendBeacon !== "function" || this.options.disabledEventTrack || !this.metricsData) {
+    if (!time || typeof navigator.sendBeacon !== 'function' || this.options.disabledEventTrack || !this.metricsData) {
       return
     }
 
@@ -173,7 +173,7 @@ export const App = (function () {
 
     if (!nextUrl) {
       // user closed the window
-      params.bounces = isOnFirstPage ? 'Yes' : 'No'
+      params.bounces = isOnFirstPage ? constants.YES : constants.NO
     } else if (nextUrl[0] !== '/' && nextUrl.substr(0, host.length) !== getHost()) {
       // link outside of the app
       params.transitions = props.transition(path, nextUrl);
@@ -182,7 +182,7 @@ export const App = (function () {
     // polyfil for IE, this won't always work, but it's better than nothing.
     navigator.sendBeacon = navigator.sendBeacon || sendData;
     navigator.sendBeacon(constants.API_URL, JSON.stringify({
-      event: 'Page Views',
+      event: constants.EVENT.PAGE_VIEWS,
       websiteId: this.websiteId,
       props: params,
       ignoreErrors: this.options.ignoreErrors || false,

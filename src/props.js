@@ -1,20 +1,21 @@
 import { isBrowser, isReferrerSameHost } from "./utils"
+import constants from "./constants"
 
 /**
  * Get the preferred browser locale, of the form: xx, xx-YY or falsy
  */
 function getLocale() {
-  let locale = typeof navigator.languages !== "undefined" ? navigator.languages[0] : navigator.language
+  let locale = typeof navigator.languages !== 'undefined' ? navigator.languages[0] : navigator.language
 
   if (locale[0] === '"') {
     locale = locale.substr(1)
   }
-  
+
   if (locale.length > 0 && locale[locale.length - 1] === '"') {
     locale = locale.substr(0, locale.length - 1)
   }
 
-  if (locale && locale.length === 5 && locale[2] === "-") {
+  if (locale && locale.length === 5 && locale[2] === '-') {
     return locale.substr(0, 3) + locale.substr(3).toLocaleUpperCase()
   }
   return locale
@@ -25,20 +26,20 @@ function getLocale() {
  */
 export function locale() {
   if (!isBrowser()) {
-    return { type: "locale", value: "<not-in-browser>" }
+    return { type: constants.PROPS_TYPE.LOCALE, value: constants.PROPS_VALUE.NOT_IN_BROWSER }
   }
 
-  const value = getLocale() || "<none>"
-  return { type: "locale", value }
+  const value = getLocale() || constants.PROPS_VALUE.NONE
+  return { type: constants.PROPS_TYPE.LOCALE, value }
 }
 
 function getScreenType() {
   const width = window.innerWidth
-  if (width <= 414) return "XS"
-  if (width <= 800) return "S"
-  if (width <= 1200) return "M"
-  if (width <= 1600) return "L"
-  return "XL"
+  if (width <= 414) return constants.SCREEN_TYPE.XS
+  if (width <= 800) return constants.SCREEN_TYPE.S
+  if (width <= 1200) return constants.SCREEN_TYPE.M
+  if (width <= 1600) return constants.SCREEN_TYPE.L
+  return constants.SCREEN_TYPE.XL
 }
 
 /**
@@ -52,9 +53,9 @@ function getScreenType() {
  */
 export function screenType() {
   if (!isBrowser()) {
-    return { type: "screen-type", value: "<not-in-browser>" }
+    return { type: constants.PROPS_TYPE.SCREEN_TYPE, value: constants.PROPS_VALUE.NOT_IN_BROWSER }
   }
-  return { type: "screen-type", value: getScreenType() }
+  return { type: constants.PROPS_TYPE.SCREEN_TYPE, value: getScreenType() }
 }
 
 /**
@@ -62,13 +63,13 @@ export function screenType() {
  */
 export function referrer() {
   if (!isBrowser()) {
-    return { type: "referrer", value: "<not-in-browser>" }
+    return { type: constants.PROPS_TYPE.REFERRER, value: constants.PROPS_VALUE.NOT_IN_BROWSER }
   }
   if (isReferrerSameHost()) {
-    return { type: "referrer", value: "<none>" }
+    return { type: constants.PROPS_TYPE.REFERRER, value: constants.PROPS_VALUE.NONE }
   }
 
-  return { type: "referrer", value: document.referrer || "<none>" }
+  return { type: constants.PROPS_TYPE.REFERRER, value: document.referrer || constants.PROPS_VALUE.NONE }
 }
 
 /**
@@ -80,7 +81,7 @@ export function referrer() {
  */
 export function path(hash = false, search = false) {
   if (!isBrowser()) {
-    return { type: "path", value: "<not-in-browser>" }
+    return { type: constants.PROPS_TYPE.PATH, value: constants.PROPS_VALUE.NOT_IN_BROWSER }
   }
   let value = window.location.pathname
 
@@ -95,7 +96,7 @@ export function path(hash = false, search = false) {
     value += _search
   }
 
-  return { type: "path", value }
+  return { type: constants.PROPS_TYPE.PATH, value }
 }
 
 /**
@@ -105,7 +106,7 @@ export function path(hash = false, search = false) {
  * @param next The next value
  */
 export function transition(previous, next) {
-  return { type: "transition", value: previous + "  ->  " + next }
+  return { type: constants.PROPS_TYPE.TRANSITION, value: previous + '  ->  ' + next }
 }
 
 /**
@@ -120,24 +121,24 @@ export function transition(previous, next) {
  *
  * @param durationMs the duration to encode, in milliseconds
  */
-export function durationInterval(durationMs, prefix = "") {
+export function durationInterval(durationMs, prefix = '') {
   if (durationMs < 5000) {
-    return { type: "duration-interval", value: prefix + "< 5s" }
+    return { type: constants.PROPS_TYPE.DURATION_INTERVAL, value: prefix + '< 5s' }
   }
   if (durationMs < 15000) {
-    return { type: "duration-interval", value: prefix + "< 15s" }
+    return { type: constants.PROPS_TYPE.DURATION_INTERVAL, value: prefix + '< 15s' }
   }
   if (durationMs < 30000) {
-    return { type: "duration-interval", value: prefix + "< 30s" }
+    return { type: constants.PROPS_TYPE.DURATION_INTERVAL, value: prefix + '< 30s' }
   }
   if (durationMs < 60000) {
-    return { type: "duration-interval", value: prefix + "< 1m" }
+    return { type: constants.PROPS_TYPE.DURATION_INTERVAL, value: prefix + '< 1m' }
   }
   if (durationMs < 5 * 60000) {
-    return { type: "duration-interval", value: prefix + "< 5m" }
+    return { type: constants.PROPS_TYPE.DURATION_INTERVAL, value: prefix + '< 5m' }
   }
 
-  return { type: "duration-interval", value: prefix + "> 5m" }
+  return { type: constants.PROPS_TYPE.DURATION_INTERVAL, value: prefix + '> 5m' }
 }
 
 /**
@@ -150,7 +151,7 @@ export function durationInterval(durationMs, prefix = "") {
  * - iOS
  */
 export function os() {
-  return { type: "os" }
+  return { type: constants.PROPS_TYPE.OS }
 }
 
 /**
@@ -164,5 +165,5 @@ export function os() {
  * - Mobile Safari
  */
 export function browser() {
-  return { type: "browser" }
+  return { type: constants.PROPS_TYPE.BROWSER }
 }
