@@ -1,6 +1,6 @@
 import * as props from "./props"
-import { isBrowser, isReferrerSameHost, getHost, isReferrerSameHost, sendData } from "./utils"
-import { API_URL } from './constants'
+import { isBrowser, isReferrerSameHost, getHost, sendData } from "./utils"
+import constants from './constants'
 
 /**
  * The default options.
@@ -83,7 +83,7 @@ export const App = (function () {
       body.update = true;
     }
 
-    sendData(API_URL, JSON.stringify(body))
+    sendData(constants.API_URL, JSON.stringify(body))
   };
 
 
@@ -181,7 +181,7 @@ export const App = (function () {
 
     // polyfil for IE, this won't always work, but it's better than nothing.
     navigator.sendBeacon = navigator.sendBeacon || sendData;
-    navigator.sendBeacon(API_URL, JSON.stringify({
+    navigator.sendBeacon(constants.API_URL, JSON.stringify({
       event: 'Page Views',
       websiteId: this.websiteId,
       props: params,
