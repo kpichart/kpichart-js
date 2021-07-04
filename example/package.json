@@ -1,0 +1,14 @@
+{
+  "name": "yamak-js-example",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "http-server -p 3000"
+  },
+  "dependencies": {
+    "yamak-js": "file:.."
+  },
+  "devDependencies": {
+    "http-server": "0.12.3"
+  }
+}

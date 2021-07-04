@@ -30,7 +30,7 @@ export const App = (function () {
 
       // Calculate the data
       const { hash = false, search = false } = options || {}
-      metricsData = {
+      this.metricsData = {
         hash: hash,
         search: search,
         path: props.path(hash, search).value,
@@ -44,9 +44,9 @@ export const App = (function () {
       };
 
       // Track the first/current page view
-      this.trackSinglePage(true, metricsData.path)
+      this.trackSinglePage(true, this.metricsData.path)
 
-      window.addEventListener('unload', onPageTimeSpent)
+      window.addEventListener('unload', this.onPageTimeSpent)
     }
   }
 
