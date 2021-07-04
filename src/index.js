@@ -5,6 +5,18 @@ import { isBrowser } from "./utils"
 export { props }
 export { App }
 
+/**
+ * This file is the entry point for the `yamak-js` library.
+ *
+ * It contains basic methods to initialize and log events:
+ * ```
+ * init(websiteId, options)
+ * track(event, options)
+ * ```
+ *
+ * As well as the `props` helpers.
+ */
+
 
 /**
  * The default site, or `null` if none.
@@ -20,10 +32,20 @@ export let DEFAULT_SITE = null
  * @returns The default app
  */
 export function init(websiteId, options) {
-  if (!isBrowser() || DEFAULT_APP) {
-    return DEFAULT_APP
+  if (!isBrowser() || DEFAULT_SITE) {
+    return DEFAULT_SITE
   }
-  DEFAULT_APP = new App(websiteId, options)
-  console.log(DEFAULT_APP);
-  return DEFAULT_APP
+  DEFAULT_SITE = new App(websiteId, options)
+  return DEFAULT_SITE
+}
+
+/**
+ * Tracks an event using the default app, you must call `init()` before calling this.
+ *
+ * @param event The event to track
+ */
+ export function track(event, options) {
+  if (!DEFAULT_SITE || !isInBrowser()) return
+
+  DEFAULT_SITE.track(event, options)
 }
