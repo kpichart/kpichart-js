@@ -4,13 +4,19 @@ export function isBrowser() {
   return typeof window !== 'undefined'
 }
 
-export function sendData(url, stringifyData) {
+export function sendData(url, stringifyData, callback) {
   // do not use fetch, for IE compatibility
   const request = new XMLHttpRequest()
   url = url || constants.API_URL
   request.open('post', url, true)
   request.setRequestHeader('Content-Type', 'application/json')
   request.send(stringifyData)
+
+  request.onreadystatechange = function() {
+    if (request.readyState == 4) {
+      (typeof callback === 'function') && callback();
+    }
+  }
 }
 
 /**

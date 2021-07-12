@@ -71,13 +71,14 @@ export const App = (function () {
 
     if (options.unique) {
       const hashEvent = JSON.stringify({ event, options })
-      if (this.uniqueEvents[hashEvent])
+      if (this.uniqueEvents[hashEvent]) {
         return Promise.resolve();
+      }
       this.uniqueEvents[hashEvent] = true
     }
 
     const body = {
-      e: event,
+      n: event,
       w: this.websiteId,
       e: this.options.ignoreErrors || false
     }
@@ -92,7 +93,7 @@ export const App = (function () {
       body.u = true
     }
 
-    sendData(constants.API_URL, JSON.stringify(body))
+    sendData(constants.API_URL, JSON.stringify(body), options.callback)
   };
 
 
@@ -191,11 +192,11 @@ export const App = (function () {
     // polyfil for IE, this won't always work, but it's better than nothing.
     navigator.sendBeacon = navigator.sendBeacon || sendData;
     navigator.sendBeacon(constants.API_URL, JSON.stringify({
-      event: constants.EVENT.PAGE_VIEWS,
-      websiteId: this.websiteId,
-      props: params,
-      ignoreErrors: this.options.ignoreErrors || false,
-      update: true
+      n: constants.EVENT.PAGE_VIEWS,
+      w: this.websiteId,
+      p: params,
+      e: this.options.ignoreErrors || false,
+      u: true
     }));
   };
 
