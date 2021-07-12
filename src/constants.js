@@ -5,6 +5,7 @@ export default {
   API_URL: 'https://app.yamak.io/collect',
   YES: 'Yes',
   NO: 'No',
+  OUTBOUND_CLICK: 'Outbound Click',
   PROPS_TYPE: {
     LOCALE: 'locale',
     NONE: 'none',

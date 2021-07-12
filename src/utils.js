@@ -49,3 +49,8 @@ export function isInIframe() {
 export function isExcludePath(path) {
   return location.pathname.match(new RegExp('^' + path.trim().replace(/\*\*/g, '.*').replace(/([^\.])\*/g, '$1[^\\s\/]*') + '\/?$'))
 }
+
+export  function trackOutbound(handleOutbound) {
+  document.addEventListener('click', handleOutbound)
+  document.addEventListener('auxclick', handleOutbound)
+}

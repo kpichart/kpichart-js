@@ -1,5 +1,5 @@
 import * as props from "./props"
-import { isBrowser, isReferrerSameHost, getHost, sendData, isExcludePath } from "./utils"
+import { isBrowser, isReferrerSameHost, getHost, sendData, isExcludePath, trackOutbound } from "./utils"
 import constants from './constants'
 
 /**
@@ -45,6 +45,10 @@ export const App = (function () {
 
       // Track the first/current page view
       this.trackSinglePage(true, this.metricsData.path)
+
+      if(options.trackOutbound) {
+        trackOutbound(this.handleOutbound)
+      } 
 
       window.addEventListener('unload', this.onPageTimeSpent)
     }
@@ -162,6 +166,34 @@ export const App = (function () {
     this.track(constants.EVENT.PAGE_VIEWS, {
       props: params
     })
+  }
+
+
+
+
+  App.prototype.handleOutbound = function (event) {
+    let link = event.target;
+    let middle = event.type == "auxclick" && event.which == 2;
+    let click = event.type == "click";
+    while(link && (typeof link.tagName == 'undefined' || link.tagName.toLowerCase() != 'a' || !link.href)) {
+      link = link.parentNode
+    }
+
+    if (link && link.href && link.host && link.host !== location.host) {
+      if (middle || click) {
+        this.track(constants.OUTBOUND_CLICK, {props: {url: link.href}})
+      }
+
+      // Delay navigation so that Yamak.js is notified of the click
+      if(!link.target || link.target.match(/^_(self|parent|top)$/i)) {
+        if (!(event.ctrlKey || event.metaKey || event.shiftKey) && click) {
+          setTimeout(function() {
+            location.href = link.href;
+          }, 150);
+          event.preventDefault();
+        }
+      }
+    }
   }
 
 
