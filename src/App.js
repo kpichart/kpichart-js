@@ -1,5 +1,5 @@
 import * as props from "./props"
-import { isBrowser, isReferrerSameHost, getHost, sendData } from "./utils"
+import { isBrowser, isReferrerSameHost, getHost, sendData, isExcludePath } from "./utils"
 import constants from './constants'
 
 /**
@@ -60,6 +60,15 @@ export const App = (function () {
     if (this.options.disabledEventTrack || !isBrowser()) {
       return Promise.resolve()
     }
+
+    if(this.options.excludePaths) {
+      for (let i = 0; i < excludePaths.length; i++) {
+        if (event === constants.EVENT.PAGE_VIEWS && isExcludePath(excludePaths[i])) {
+          return Promise.resolve();
+        }
+      }
+    }
+
     if (options.unique) {
       const hashEvent = JSON.stringify({ event, options })
       if (this.uniqueEvents[hashEvent])
@@ -68,19 +77,19 @@ export const App = (function () {
     }
 
     const body = {
-      event,
-      websiteId: this.websiteId,
-      ignoreErrors: this.options.ignoreErrors || false
+      e: event,
+      w: this.websiteId,
+      e: this.options.ignoreErrors || false
     }
 
     if (options.remove) {
-      body.remove = true;
+      body.r = true
     }
     if (options.props) {
-      body.props = options.props;
+      body.p = options.props
     }
     if (options.update) {
-      body.update = true;
+      body.u = true
     }
 
     sendData(constants.API_URL, JSON.stringify(body))
