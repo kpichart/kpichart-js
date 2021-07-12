@@ -1,4 +1,4 @@
-import  constants from './constants'
+import constants from './constants'
 
 export function isBrowser() {
   return typeof window !== 'undefined'
@@ -12,7 +12,7 @@ export function sendData(url, stringifyData, callback) {
   request.setRequestHeader('Content-Type', 'application/json')
   request.send(stringifyData)
 
-  request.onreadystatechange = function() {
+  request.onreadystatechange = function () {
     if (request.readyState == 4) {
       (typeof callback === 'function') && callback();
     }
@@ -24,7 +24,7 @@ export function sendData(url, stringifyData, callback) {
  *
  * Does **not** end with a trailing '/'.
  */
- export function getHost() {
+export function getHost() {
   return location.protocol + '//' + location.host
 }
 
@@ -50,7 +50,7 @@ export function isExcludePath(path) {
   return location.pathname.match(new RegExp('^' + path.trim().replace(/\*\*/g, '.*').replace(/([^\.])\*/g, '$1[^\\s\/]*') + '\/?$'))
 }
 
-export  function trackOutbound(handleOutbound) {
+export function trackOutbound(handleOutbound) {
   document.addEventListener('click', handleOutbound)
   document.addEventListener('auxclick', handleOutbound)
 }

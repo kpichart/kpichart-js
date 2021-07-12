@@ -44,7 +44,7 @@ export function init(websiteId, options) {
  *
  * @param event The event to track
  */
- export function track(event, options) {
+export function track(event, options) {
   if (!DEFAULT_SITE || !isInBrowser()) return
 
   DEFAULT_SITE.track(event, options)
