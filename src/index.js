@@ -10,7 +10,7 @@ export { App }
  *
  * It contains basic methods to initialize and log events:
  * ```
- * init(websiteId, options)
+ * init(projectId, options)
  * track(event, options)
  * ```
  *
@@ -21,22 +21,22 @@ export { App }
 /**
  * The default site, or `null` if none.
  */
-export let DEFAULT_SITE = null
+export let DEFAULT_APP = null
 
 /**
  * Initialize a default site for the given website with the given options.
  *
- * @param websiteId The website for which to initialize the library
+ * @param projectId The website for which to initialize the library
  * @param options The options to use
  *
  * @returns The default app
  */
-export function init(websiteId, options) {
-  if (!isBrowser() || DEFAULT_SITE) {
-    return DEFAULT_SITE
+export function init(projectId, options) {
+  if (!isBrowser() || DEFAULT_APP) {
+    return DEFAULT_APP
   }
-  DEFAULT_SITE = new App(websiteId, options)
-  return DEFAULT_SITE
+  DEFAULT_APP = new App(projectId, options)
+  return DEFAULT_APP
 }
 
 /**
@@ -45,7 +45,7 @@ export function init(websiteId, options) {
  * @param event The event to track
  */
 export function track(event, options) {
-  if (!DEFAULT_SITE || !isInBrowser()) return
+  if (!DEFAULT_APP || !isInBrowser()) return
 
-  DEFAULT_SITE.track(event, options)
+  DEFAULT_APP.track(event, options)
 }
