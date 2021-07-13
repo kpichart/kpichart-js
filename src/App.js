@@ -9,8 +9,8 @@ const defaults = {}
 
 
 export const App = (function () {
-  function App(websiteId, options = defaults) {
-    this.websiteId = websiteId;
+  function App(projectId, options = defaults) {
+    this.projectId = projectId;
     this.options = options;
     this.uniqueEvents = {};
     // This variables used when tracking pages
@@ -83,7 +83,7 @@ export const App = (function () {
 
     const body = {
       n: event,
-      w: this.websiteId,
+      w: this.projectId,
       e: this.options.ignoreErrors || false
     }
 
@@ -225,7 +225,7 @@ export const App = (function () {
     navigator.sendBeacon = navigator.sendBeacon || sendData;
     navigator.sendBeacon(constants.API_URL, JSON.stringify({
       n: constants.EVENT.PAGE_VIEWS,
-      w: this.websiteId,
+      w: this.projectId,
       p: params,
       e: this.options.ignoreErrors || false,
       u: true
